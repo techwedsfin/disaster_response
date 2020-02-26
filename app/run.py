@@ -43,6 +43,14 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    # Top 10 high category counts
+    high_category_count = df.iloc[:,4:].sum().sort_values(ascending=False)[0:10]
+    high_category_names = list(high_category_count.index)
+    
+    # Category counts for Weather
+    weather_category_count = df[['weather_related','other_weather']].sum()
+    weather_category_names = list(weather_category_count.index)
+    
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
@@ -61,6 +69,42 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=high_category_names,
+                    y=high_category_count
+                )
+            ],
+
+            'layout': {
+                'title': 'Top 10 High Category counts for messages',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category"
+                }
+            }
+          },
+        {
+            'data': [
+                Bar(
+                    x=weather_category_names,
+                    y=weather_category_count
+                )
+            ],
+
+            'layout': {
+                'title': 'Category counts related to Weather for messages',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category"
                 }
             }
         }
